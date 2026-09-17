@@ -36,6 +36,27 @@ namespace StudentManagementAPI.Controllers
             
             return Ok(student); // Returns 200 with the student data
         }
+
+        // POST: api/students
+        [HttpPost]
+        public ActionResult<Student> CreateStudent([FromBody] Student newStudent)
+        {
+            // Simple logic to auto-generate the next ID
+            if (students.Any())
+            {
+                newStudent.Id = students.Max(s => s.Id) + 1;
+            }
+            else
+            {
+                newStudent.Id = 1;
+            }
+
+            // Add the student to our mock list
+            students.Add(newStudent);
+
+            // Return 201 Created with a link to the newly created student resource
+            return CreatedAtAction(nameof(GetStudent), new { id = newStudent.Id }, newStudent);
+        }
     }
 
 }
