@@ -28,12 +28,12 @@ namespace StudentManagementAPI.Controllers
         public ActionResult<Student> GetStudent(int id)
         {
             var student = students.FirstOrDefault(s => s.Id == id);
-
+            
             if (student == null)
             {
                 return NotFound(); // Returns 404 if the student doesn't exist
             }
-
+            
             return Ok(student); // Returns 200 with the student data
         }
     }
