@@ -57,6 +57,45 @@ namespace StudentManagementAPI.Controllers
             // Return 201 Created with a link to the newly created student resource
             return CreatedAtAction(nameof(GetStudent), new { id = newStudent.Id }, newStudent);
         }
+
+        // PUT: api/students/{id}
+        [HttpPut("{id}")]
+        public IActionResult UpdateStudent(int id, [FromBody] Student updatedStudent)
+        {
+            var student = students.FirstOrDefault(s => s.Id == id);
+
+            if (student == null)
+            {
+                return NotFound(); // Returns 404 if the student doesn't exist
+            }
+
+            // Update the existing student's properties
+            student.Name = updatedStudent.Name;
+            student.Surname = updatedStudent.Surname;
+            student.Email = updatedStudent.Email;
+            student.Course = updatedStudent.Course;
+            student.Year = updatedStudent.Year;
+            student.StudentNumber = updatedStudent.StudentNumber;
+
+            return NoContent(); // Returns 204 No Content on successful update
+        }
+
+        // DELETE: api/students/{id}
+        [HttpDelete("{id}")]
+        public IActionResult DeleteStudent(int id)
+        {
+            var student = students.FirstOrDefault(s => s.Id == id);
+
+            if (student == null)
+            {
+                return NotFound(); // Returns 404 if the student doesn't exist
+            }
+
+            // Remove the student from the static list
+            students.Remove(student);
+
+            return NoContent(); // Returns 204 No Content on successful deletion
+        }
     }
 
 }
